@@ -1,15 +1,16 @@
-import {vec3} from 'gl-matrix';
-import Stats from 'stats-js';
 import * as DAT from 'dat.gui';
+import { vec3 } from 'gl-matrix';
+import Stats from 'stats-js';
+import Camera from './Camera';
+import Cube from './geometry/Cube';
 import Icosphere from './geometry/Icosphere';
 import Square from './geometry/Square';
+import { setGL } from './globals';
 import OpenGLRenderer from './rendering/gl/OpenGLRenderer';
-import Camera from './Camera';
-import {setGL} from './globals';
-import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
+import ShaderProgram, { Shader } from './rendering/gl/ShaderProgram';
 
-import lambertVertSource from './shaders/lambert-vert.glsl?raw';
 import lambertFragSource from './shaders/lambert-frag.glsl?raw';
+import lambertVertSource from './shaders/lambert-vert.glsl?raw';
 
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
@@ -20,6 +21,7 @@ const controls = {
 
 let icosphere: Icosphere;
 let square: Square;
+let cube: Cube;
 let prevTesselations: number = 5;
 
 function loadScene() {
@@ -27,6 +29,8 @@ function loadScene() {
   icosphere.create();
   square = new Square(vec3.fromValues(0, 0, 0));
   square.create();
+  cube = new Cube(vec3.fromValues(0, 0, 0), 2.0, 2.0, 2.0);
+  cube.create();
 }
 
 function main() {
@@ -80,8 +84,9 @@ function main() {
       icosphere.create();
     }
     renderer.render(camera, lambert, [
-      icosphere,
-      // square,
+    //   icosphere,
+    //   square,
+      cube
     ]);
     stats.end();
 
